@@ -3,125 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eclipse Demo</title>
-<link rel="icon" type="image/png" href="images/moon.png">
+<title>Study Buddy</title>
+<link rel="icon" type="image/png" href="moon.png">
 <style>
   body {
-    margin: 0;
-    font-family: 'Courier New', monospace;
-    background-color: #121212;
-    color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    margin:0;
+    font-family:'Courier New', monospace;
+    background-color:#121212;
+    color:#e0e0e0;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    padding-top:50px;
   }
-  #chat-container {
-    background: #1c1c2c;
-    width: 400px;
-    max-width: 90%;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 20px #3F184B;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  .container {
+    background:#1c1c2c;
+    padding:25px;
+    border-radius:15px;
+    width:90%;
+    max-width:700px;
+    box-shadow:0 0 20px #3F184B;
   }
-  #chat {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 10px;
+  h1 {text-align:center; color:#C3AAFF;}
+  select, button {
+    padding:10px;
+    margin:5px 0;
+    border-radius:10px;
+    border:none;
+    background:#2a1f3c;
+    color:#e0e0e0;
+    font-weight:bold;
+    cursor:pointer;
   }
-  .message {
-    margin: 5px 0;
-    padding: 8px 12px;
-    border-radius: 12px;
-    max-width: 80%;
-    word-wrap: break-word;
-  }
-  .eclipse {
-    background-color: #3F184B;
-    color: #C3AAFF;
-    align-self: flex-start;
-  }
-  .user {
-    background-color: #C3AAFF;
-    color: #1c1c2c;
-    align-self: flex-end;
-  }
-  #input-container {
-    display: flex;
-    gap: 10px;
-  }
-  #user-input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    background: #2a1f3c;
-    color: #e0e0e0;
-  }
-  #send-btn {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 10px;
-    background: #3F184B;
-    color: #C3AAFF;
-    cursor: pointer;
-    font-weight: bold;
-  }
+  button:hover {background:#3F184B;}
+  .message {margin:10px 0; padding:10px; border-radius:10px; background:#3F184B; color:#C3AAFF;}
+  .question {margin:15px 0;}
+  .option {display:block; margin:5px 0; padding:8px; border-radius:8px; cursor:pointer; background:#2a1f3c;}
+  .option:hover {background:#3F184B;}
+  .flashcard {margin:15px 0; padding:20px; border-radius:12px; background:#2a1f3c; cursor:pointer; text-align:center;}
+  .flashcard p {margin:0;}
 </style>
 </head>
 <body>
+<div class="container">
+  <h1>Study Buddy 🌙</h1>
 
-<div id="chat-container">
-  <div id="chat">
-    <div class="message eclipse">🌙 Eclipse: Hello, I am Eclipse. What can I do for you today?</div>
+  <div id="setup">
+    <label for="category">Select Category:</label>
+    <select id="category">
+      <option value="math">Math</option>
+      <option value="coding">Coding</option>
+      <option value="science">Science</option>
+    </select>
+
+    <label for="level">Select Difficulty:</label>
+    <select id="level">
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+
+    <button id="start-btn">Start Quiz</button>
   </div>
-  <div id="input-container">
-    <input type="text" id="user-input" placeholder="Type your message...">
-    <button id="send-btn">Send</button>
+
+  <div id="quiz-section" style="display:none;">
+    <div class="message" id="feedback">Good luck!</div>
+    <div class="question" id="question"></div>
+    <div id="options"></div>
+    <button id="next-btn" style="display:none;">Next Question</button>
+  </div>
+
+  <div id="flashcard-section" style="display:none;">
+    <h2>Flashcards</h2>
+    <div class="flashcard" id="flashcard">Click to flip</div>
+    <button id="next-card-btn">Next Card</button>
   </div>
 </div>
 
 <script>
-  const chat = document.getElementById('chat');
-  const input = document.getElementById('user-input');
-  const sendBtn = document.getElementById('send-btn');
-
-  function appendMessage(text, className) {
-    const msg = document.createElement('div');
-    msg.className = `message ${className}`;
-    msg.innerText = text;
-    chat.appendChild(msg);
-    chat.scrollTop = chat.scrollHeight;
+const quizData = {
+  math: {
+    beginner:[
+      {q:"What is 2+2?", options:["3","4","5"], answer:"4"},
+      {q:"What is 5-3?", options:["2","3","4"], answer:"2"},
+    ],
+    intermediate:[
+      {q:"Solve: 3x + 5 = 14, x = ?", options:["2","3","4"], answer:"3"},
+      {q:"Factor: x^2 - 9", options:["(x+3)(x-3)","(x+9)(x-1)","(x-9)(x+1)"], answer:"(x+3)(x-3)"},
+    ],
+    advanced:[
+      {q:"Integral of x dx?", options:["x^2/2 + C","x^2 + C","2x + C"], answer:"x^2/2 + C"},
+      {q:"Derivative of sin(x)?", options:["cos(x)","-cos(x)","sin(x)"], answer:"cos(x)"},
+    ]
+  },
+  coding: {
+    beginner:[
+      {q:"What does 'print()' do in Python?", options:["Displays output","Takes input","Starts a loop"], answer:"Displays output"},
+      {q:"HTML stands for?", options:["Hyper Text Markup Language","High Tech Markup Logic","Hyperlinks Text Machine Language"], answer:"Hyper Text Markup Language"},
+    ],
+    intermediate:[
+      {q:"Which is a Python loop?", options:["for","when","repeat"], answer:"for"},
+      {q:"How do you comment in HTML?", options:["<!-- Comment -->","// Comment","# Comment"], answer:"<!-- Comment -->"},
+    ],
+    advanced:[
+      {q:"What does CSS 'flex' do?", options:["Aligns elements","Changes color","Imports JS"], answer:"Aligns elements"},
+      {q:"Python: what is a lambda?", options:["Anonymous function","Variable","Class"], answer:"Anonymous function"},
+    ]
+  },
+  science:{
+    beginner:[
+      {q:"Water formula?", options:["H2O","CO2","O2"], answer:"H2O"},
+      {q:"Earth revolves around?", options:["Sun","Moon","Mars"], answer:"Sun"},
+    ],
+    intermediate:[
+      {q:"Atomic number of Carbon?", options:["6","12","8"], answer:"6"},
+      {q:"Newton's 2nd Law?", options:["F=ma","E=mc^2","V=IR"], answer:"F=ma"},
+    ],
+    advanced:[
+      {q:"Photosynthesis occurs in?", options:["Chloroplast","Mitochondria","Nucleus"], answer:"Chloroplast"},
+      {q:"Heaviest naturally occurring element?", options:["Uranium","Gold","Lead"], answer:"Uranium"},
+    ]
   }
+};
 
-  function respondToUser(text) {
-    let response = "";
-    text = text.toLowerCase();
-    if(text.includes("hello") || text.includes("hi")) response = "Hello! How can I assist you today?";
-    else if(text.includes("how are you")) response = "I am a machine, but I am functioning optimally!";
-    else if(text.includes("joke")) response = "Why do programmers prefer dark mode? Because light attracts bugs!";
-    else response = "Interesting... Tell me more.";
-    appendMessage("🌙 Eclipse: " + response, "eclipse");
-  }
+const flashcardsData = {
+  math:[
+    {front:"2+2", back:"4"},
+    {front:"3x3", back:"9"},
+  ],
+  coding:[
+    {front:"print()", back:"Displays output in Python"},
+    {front:"HTML", back:"Hyper Text Markup Language"},
+  ],
+  science:[
+    {front:"H2O", back:"Water formula"},
+    {front:"Photosynthesis", back:"Chloroplast"},
+  ]
+};
 
-  sendBtn.addEventListener('click', () => {
-    const text = input.value.trim();
-    if(text) {
-      appendMessage(text, "user");
-      respondToUser(text);
-      input.value = "";
-      input.focus();
+let currentQuiz = [], currentQ = 0;
+let currentCard = 0, flipped = false;
+
+const setupDiv = document.getElementById('setup');
+const quizDiv = document.getElementById('quiz-section');
+const flashDiv = document.getElementById('flashcard-section');
+const questionEl = document.getElementById('question');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const flashcardEl = document.getElementById('flashcard');
+
+document.getElementById('start-btn').addEventListener('click',()=>{
+  const cat = document.getElementById('category').value;
+  const lvl = document.getElementById('level').value;
+  currentQuiz = quizData[cat][lvl];
+  currentQ = 0;
+  setupDiv.style.display='none';
+  quizDiv.style.display='block';
+  flashDiv.style.display='block';
+  showQuestion();
+  showFlashcard(cat);
+});
+
+function showQuestion(){
+  const q = currentQuiz[currentQ];
+  questionEl.innerText = q.q;
+  optionsEl.innerHTML='';
+  q.options.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className='option';
+    btn.innerText=opt;
+    btn.addEventListener('click',()=>{
+      if(opt===q.answer) feedbackEl.innerText="Correct! 🎉";
+      else feedbackEl.innerText="Oops! The answer was: "+q.answer;
+      document.getElementById('next-btn').style.display='inline';
+    });
+    optionsEl.appendChild(btn);
+  });
+  document.getElementById('next-btn').onclick=()=>{
+    currentQ++;
+    if(currentQ<currentQuiz.length){
+      showQuestion();
+      feedbackEl.innerText="Good luck!";
+      document.getElementById('next-btn').style.display='none';
+    }else{
+      feedbackEl.innerText="You finished the quiz!";
+      optionsEl.innerHTML='';
+      document.getElementById('next-btn').style.display='none';
     }
-  });
+  }
+}
 
-  input.addEventListener('keypress', (e) => {
-    if(e.key === 'Enter') sendBtn.click();
-  });
+function showFlashcard(cat){
+  currentCard=0;
+  flipped=false;
+  flashcardEl.innerText=flashcardsData[cat][currentCard].front;
+}
+
+flashcardEl.addEventListener('click',()=>{
+  const cat = document.getElementById('category').value;
+  const card = flashcardsData[cat][currentCard];
+  flashcardEl.innerText = flipped ? card.front : card.back;
+  flipped = !flipped;
+});
+
+document.getElementById('next-card-btn').addEventListener('click',()=>{
+  const cat = document.getElementById('category').value;
+  currentCard = (currentCard+1)%flashcardsData[cat].length;
+  flipped=false;
+  flashcardEl.innerText=flashcardsData[cat][currentCard].front;
+});
 </script>
-
 </body>
 </html>

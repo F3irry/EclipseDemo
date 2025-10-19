@@ -1,2 +1,12 @@
-git add .gitignore
-git commit -m "Ignore .env file"
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,12 +1,4 @@
-# Node modules
-node_modules/
-
-# Environment variables
 .env
-
-# Logs
+node_modules/
+__pycache__/
 *.log
-
-# OS files
-.DS_Store
-Thumbs.db

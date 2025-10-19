@@ -4,215 +4,242 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Buddy</title>
-<link rel="icon" type="image/png" href="moon.png">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body {
-    margin:0;
-    font-family:'Courier New', monospace;
-    background-color:#121212;
-    color:#e0e0e0;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    min-height:100vh;
-    padding-top:50px;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fdfdfd;
+    color: #1a1a1a;
   }
-  .container {
-    background:#1c1c2c;
-    padding:25px;
-    border-radius:15px;
-    width:90%;
-    max-width:700px;
-    box-shadow:0 0 20px #3F184B;
+  header {
+    background-color: #1976d2;
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  h1 {text-align:center; color:#C3AAFF;}
-  select, button {
-    padding:10px;
-    margin:5px 0;
-    border-radius:10px;
-    border:none;
-    background:#2a1f3c;
-    color:#e0e0e0;
-    font-weight:bold;
-    cursor:pointer;
+  header h1 {
+    margin: 0;
+    font-size: 2em;
   }
-  button:hover {background:#3F184B;}
-  .message {margin:10px 0; padding:10px; border-radius:10px; background:#3F184B; color:#C3AAFF;}
-  .question {margin:15px 0;}
-  .option {display:block; margin:5px 0; padding:8px; border-radius:8px; cursor:pointer; background:#2a1f3c;}
-  .option:hover {background:#3F184B;}
-  .flashcard {margin:15px 0; padding:20px; border-radius:12px; background:#2a1f3c; cursor:pointer; text-align:center;}
-  .flashcard p {margin:0;}
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 25px;
+    font-weight: 500;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  .subject-selection {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
+  .subject-card {
+    background-color: #e3f2fd;
+    border-radius: 10px;
+    padding: 25px 40px;
+    width: 30%;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .subject-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  }
+  .quiz-container {
+    display: none;
+    background-color: #fff3e0;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  }
+  .quiz-question {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+  }
+  input[type="text"] {
+    padding: 10px;
+    width: 60%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+  }
+  button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button.submit-btn {
+    background-color: #1976d2;
+    color: white;
+  }
+  button.mark-btn {
+    background-color: #ff9800;
+    color: white;
+    margin-left: 10px;
+  }
+  .stars {
+    margin-top: 20px;
+  }
+  .star {
+    color: gold;
+    font-size: 1.5em;
+    margin-right: 5px;
+  }
+  .marked {
+    color: #d32f2f;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  .profile-container {
+    display: none;
+    background-color: #e1f5fe;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 30px;
+  }
+  .profile-container h2 {
+    margin-top: 0;
+  }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Study Buddy 🌙</h1>
 
-  <div id="setup">
-    <label for="category">Select Category:</label>
-    <select id="category">
-      <option value="math">Math</option>
-      <option value="coding">Coding</option>
-      <option value="science">Science</option>
-    </select>
+<header>
+  <h1>Study Buddy</h1>
+  <nav>
+    <a href="#" id="home-link">Home</a>
+    <a href="#" id="profile-link">Profile</a>
+  </nav>
+</header>
 
-    <label for="level">Select Difficulty:</label>
-    <select id="level">
-      <option value="beginner">Beginner</option>
-      <option value="intermediate">Intermediate</option>
-      <option value="advanced">Advanced</option>
-    </select>
+<main>
+  <section class="home-section">
+    <h2>Select a Subject</h2>
+    <div class="subject-selection">
+      <div class="subject-card" data-subject="Math">Math</div>
+      <div class="subject-card" data-subject="Coding">Coding</div>
+      <div class="subject-card" data-subject="Science">Science</div>
+    </div>
 
-    <button id="start-btn">Start Quiz</button>
-  </div>
+    <div class="quiz-container" id="quiz-container">
+      <div class="quiz-question" id="quiz-question"></div>
+      <input type="text" id="user-answer" placeholder="Type your answer...">
+      <button class="submit-btn" id="submit-btn">Submit</button>
+      <button class="mark-btn" id="mark-btn">Mark for Review</button>
+      <div class="stars" id="stars"></div>
+    </div>
+  </section>
 
-  <div id="quiz-section" style="display:none;">
-    <div class="message" id="feedback">Good luck!</div>
-    <div class="question" id="question"></div>
-    <div id="options"></div>
-    <button id="next-btn" style="display:none;">Next Question</button>
-  </div>
-
-  <div id="flashcard-section" style="display:none;">
-    <h2>Flashcards</h2>
-    <div class="flashcard" id="flashcard">Click to flip</div>
-    <button id="next-card-btn">Next Card</button>
-  </div>
-</div>
+  <section class="profile-container" id="profile-container">
+    <h2>Your Progress</h2>
+    <p>Stars earned: <span id="profile-stars">0</span></p>
+    <ul id="marked-questions"></ul>
+  </section>
+</main>
 
 <script>
-const quizData = {
-  math: {
-    beginner:[
-      {q:"What is 2+2?", options:["3","4","5"], answer:"4"},
-      {q:"What is 5-3?", options:["2","3","4"], answer:"2"},
+  const subjects = {
+    "Math": [
+      {q: "What is 7 + 8?", a: "15"},
+      {q: "Solve for x: 2x = 10", a: "5"}
     ],
-    intermediate:[
-      {q:"Solve: 3x + 5 = 14, x = ?", options:["2","3","4"], answer:"3"},
-      {q:"Factor: x^2 - 9", options:["(x+3)(x-3)","(x+9)(x-1)","(x-9)(x+1)"], answer:"(x+3)(x-3)"},
+    "Coding": [
+      {q: "What keyword is used to define a function in Python?", a: "def"},
+      {q: "How do you write a comment in Python?", a: "#"}
     ],
-    advanced:[
-      {q:"Integral of x dx?", options:["x^2/2 + C","x^2 + C","2x + C"], answer:"x^2/2 + C"},
-      {q:"Derivative of sin(x)?", options:["cos(x)","-cos(x)","sin(x)"], answer:"cos(x)"},
+    "Science": [
+      {q: "What planet is known as the Red Planet?", a: "mars"},
+      {q: "H2O is the chemical formula for what?", a: "water"}
     ]
-  },
-  coding: {
-    beginner:[
-      {q:"What does 'print()' do in Python?", options:["Displays output","Takes input","Starts a loop"], answer:"Displays output"},
-      {q:"HTML stands for?", options:["Hyper Text Markup Language","High Tech Markup Logic","Hyperlinks Text Machine Language"], answer:"Hyper Text Markup Language"},
-    ],
-    intermediate:[
-      {q:"Which is a Python loop?", options:["for","when","repeat"], answer:"for"},
-      {q:"How do you comment in HTML?", options:["<!-- Comment -->","// Comment","# Comment"], answer:"<!-- Comment -->"},
-    ],
-    advanced:[
-      {q:"What does CSS 'flex' do?", options:["Aligns elements","Changes color","Imports JS"], answer:"Aligns elements"},
-      {q:"Python: what is a lambda?", options:["Anonymous function","Variable","Class"], answer:"Anonymous function"},
-    ]
-  },
-  science:{
-    beginner:[
-      {q:"Water formula?", options:["H2O","CO2","O2"], answer:"H2O"},
-      {q:"Earth revolves around?", options:["Sun","Moon","Mars"], answer:"Sun"},
-    ],
-    intermediate:[
-      {q:"Atomic number of Carbon?", options:["6","12","8"], answer:"6"},
-      {q:"Newton's 2nd Law?", options:["F=ma","E=mc^2","V=IR"], answer:"F=ma"},
-    ],
-    advanced:[
-      {q:"Photosynthesis occurs in?", options:["Chloroplast","Mitochondria","Nucleus"], answer:"Chloroplast"},
-      {q:"Heaviest naturally occurring element?", options:["Uranium","Gold","Lead"], answer:"Uranium"},
-    ]
-  }
-};
+  };
 
-const flashcardsData = {
-  math:[
-    {front:"2+2", back:"4"},
-    {front:"3x3", back:"9"},
-  ],
-  coding:[
-    {front:"print()", back:"Displays output in Python"},
-    {front:"HTML", back:"Hyper Text Markup Language"},
-  ],
-  science:[
-    {front:"H2O", back:"Water formula"},
-    {front:"Photosynthesis", back:"Chloroplast"},
-  ]
-};
+  let currentSubject = null;
+  let currentQuestionIndex = 0;
+  let starsCount = 0;
+  let markedQuestions = [];
 
-let currentQuiz = [], currentQ = 0;
-let currentCard = 0, flipped = false;
+  const quizContainer = document.getElementById('quiz-container');
+  const quizQuestion = document.getElementById('quiz-question');
+  const userAnswer = document.getElementById('user-answer');
+  const submitBtn = document.getElementById('submit-btn');
+  const markBtn = document.getElementById('mark-btn');
+  const starsDiv = document.getElementById('stars');
+  const profileContainer = document.getElementById('profile-container');
+  const profileStars = document.getElementById('profile-stars');
+  const markedQuestionsList = document.getElementById('marked-questions');
 
-const setupDiv = document.getElementById('setup');
-const quizDiv = document.getElementById('quiz-section');
-const flashDiv = document.getElementById('flashcard-section');
-const questionEl = document.getElementById('question');
-const optionsEl = document.getElementById('options');
-const feedbackEl = document.getElementById('feedback');
-const flashcardEl = document.getElementById('flashcard');
-
-document.getElementById('start-btn').addEventListener('click',()=>{
-  const cat = document.getElementById('category').value;
-  const lvl = document.getElementById('level').value;
-  currentQuiz = quizData[cat][lvl];
-  currentQ = 0;
-  setupDiv.style.display='none';
-  quizDiv.style.display='block';
-  flashDiv.style.display='block';
-  showQuestion();
-  showFlashcard(cat);
-});
-
-function showQuestion(){
-  const q = currentQuiz[currentQ];
-  questionEl.innerText = q.q;
-  optionsEl.innerHTML='';
-  q.options.forEach(opt=>{
-    const btn = document.createElement('button');
-    btn.className='option';
-    btn.innerText=opt;
-    btn.addEventListener('click',()=>{
-      if(opt===q.answer) feedbackEl.innerText="Correct! 🎉";
-      else feedbackEl.innerText="Oops! The answer was: "+q.answer;
-      document.getElementById('next-btn').style.display='inline';
-    });
-    optionsEl.appendChild(btn);
-  });
-  document.getElementById('next-btn').onclick=()=>{
-    currentQ++;
-    if(currentQ<currentQuiz.length){
+  document.querySelectorAll('.subject-card').forEach(card => {
+    card.addEventListener('click', () => {
+      currentSubject = card.dataset.subject;
+      currentQuestionIndex = 0;
       showQuestion();
-      feedbackEl.innerText="Good luck!";
-      document.getElementById('next-btn').style.display='none';
-    }else{
-      feedbackEl.innerText="You finished the quiz!";
-      optionsEl.innerHTML='';
-      document.getElementById('next-btn').style.display='none';
-    }
+      quizContainer.style.display = 'block';
+    });
+  });
+
+  function showQuestion() {
+    const question = subjects[currentSubject][currentQuestionIndex];
+    quizQuestion.innerText = question.q;
+    userAnswer.value = '';
   }
-}
 
-function showFlashcard(cat){
-  currentCard=0;
-  flipped=false;
-  flashcardEl.innerText=flashcardsData[cat][currentCard].front;
-}
+  submitBtn.addEventListener('click', () => {
+    const answer = userAnswer.value.trim().toLowerCase();
+    const correctAnswer = subjects[currentSubject][currentQuestionIndex].a.toLowerCase();
+    if(answer === correctAnswer){
+      starsCount++;
+      starsDiv.innerHTML += '⭐';
+    } else {
+      alert('Incorrect! Try next question.');
+    }
+    currentQuestionIndex++;
+    if(currentQuestionIndex >= subjects[currentSubject].length){
+      alert('End of questions for ' + currentSubject);
+      quizContainer.style.display = 'none';
+    } else {
+      showQuestion();
+    }
+  });
 
-flashcardEl.addEventListener('click',()=>{
-  const cat = document.getElementById('category').value;
-  const card = flashcardsData[cat][currentCard];
-  flashcardEl.innerText = flipped ? card.front : card.back;
-  flipped = !flipped;
-});
+  markBtn.addEventListener('click', () => {
+    const questionText = subjects[currentSubject][currentQuestionIndex].q;
+    markedQuestions.push(questionText);
+    alert('Marked for review!');
+  });
 
-document.getElementById('next-card-btn').addEventListener('click',()=>{
-  const cat = document.getElementById('category').value;
-  currentCard = (currentCard+1)%flashcardsData[cat].length;
-  flipped=false;
-  flashcardEl.innerText=flashcardsData[cat][currentCard].front;
-});
+  document.getElementById('profile-link').addEventListener('click', () => {
+    profileContainer.style.display = 'block';
+    document.querySelector('.home-section').style.display = 'none';
+    profileStars.innerText = starsCount;
+    markedQuestionsList.innerHTML = '';
+    markedQuestions.forEach(q => {
+      const li = document.createElement('li');
+      li.innerText = q;
+      li.classList.add('marked');
+      markedQuestionsList.appendChild(li);
+    });
+  });
+
+  document.getElementById('home-link').addEventListener('click', () => {
+    profileContainer.style.display = 'none';
+    document.querySelector('.home-section').style.display = 'block';
+  });
+
 </script>
+
 </body>
 </html>

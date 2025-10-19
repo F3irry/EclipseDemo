@@ -3,224 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>StudyStar</title>
+<title>Study Star</title>
 <link rel="icon" type="image/png" href="images/star.png">
 <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    margin: 0; padding: 0;
-    background-color: #f0f8ff;
-    color: #1a1a1a;
+  /* Color Palette */
+  :root {
+    --primary: #024CAC; /* Deep Blue */
+    --secondary: #D2851A; /* Warm Gold */
+    --bg-light: #f4f4f4;
+    --bg-dark: #ffffff;
+    --text-dark: #1F1F1F;
   }
-  header {
-    background-color: #0077b6;
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100%;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+  }
+
+  /* Landing Page */
+  #landing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, var(--primary), var(--secondary));
     color: white;
-    padding: 20px;
     text-align: center;
   }
-  h1 { margin: 0; }
-  main { padding: 20px; max-width: 800px; margin: auto; }
-  button {
-    background-color: #ffb703;
-    border: none; border-radius: 5px;
-    padding: 8px 15px;
+
+  #landing h1 {
+    font-size: 4em;
+    text-shadow: 0 0 20px var(--secondary);
+    margin: 0;
+  }
+
+  #landing p {
+    font-size: 1.5em;
+    margin: 10px 0 40px 0;
+  }
+
+  #begin-btn {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    background-color: var(--secondary);
+    border: none;
+    border-radius: 10px;
+    color: white;
     cursor: pointer;
-    font-weight: bold;
+    box-shadow: 0 0 15px var(--secondary);
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  button:hover { background-color: #faa307; }
-  #login-container, #study-container, #progress-container { display: none; }
-  .category-btn { margin: 5px; }
-  #chat {
-    border: 1px solid #0077b6;
-    padding: 10px; border-radius: 10px;
-    max-height: 250px; overflow-y: auto;
-    background-color: #e0f7ff;
+
+  #begin-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px var(--secondary);
   }
-  .message { margin: 5px 0; padding: 8px 12px; border-radius: 12px; }
-  .star-msg { background-color: #ffb703; }
-  .user-msg { background-color: #90e0ef; text-align: right; }
-  input[type=text] { padding: 8px; width: 70%; margin-right: 5px; border-radius: 5px; border: 1px solid #0077b6; }
+
+  /* Main App Layout */
+  #app {
+    display: flex;
+    height: 100vh;
+    display: none; /* Hidden until Begin is clicked */
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 250px;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+  }
+
+  #sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  #sidebar a {
+    text-decoration: none;
+    color: white;
+    padding: 15px 20px;
+    margin: 5px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+  }
+
+  #sidebar a:hover {
+    background-color: var(--secondary);
+  }
+
+  /* Content Area */
+  #content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background-color: var(--bg-dark);
+  }
+
+  section {
+    display: none; /* Show only one section at a time */
+  }
+
+  section.active {
+    display: block;
+  }
+
+  /* Buttons */
+  .action-btn {
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .action-btn:hover {
+    background-color: var(--secondary);
+  }
+
+  /* Stars display */
+  .star {
+    color: var(--secondary);
+    font-size: 1.5em;
+    margin-right: 5px;
+  }
+
 </style>
 </head>
 <body>
 
-<header>
-  <h1>StudyStar 🌟</h1>
-  <p>Your AI Study Buddy for Coding, Math & Science</p>
-</header>
+<!-- Landing Page -->
+<div id="landing">
+  <h1>Study Star</h1>
+  <p>Your ultimate study companion</p>
+  <button id="begin-btn">Begin!</button>
+</div>
 
-<main>
-  <!-- LOGIN -->
-  <div id="login-container">
-    <h2>Login or Signup</h2>
-    <input type="text" id="username" placeholder="Enter your name">
-    <button id="login-btn">Start Studying</button>
+<!-- Main App -->
+<div id="app">
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <h2>Study Star</h2>
+    <a href="#" data-section="dashboard">Dashboard</a>
+    <a href="#" data-section="settings">Settings</a>
+    <a href="#" data-section="login">Login / Signup</a>
+    <a href="#" data-section="progress">Progress</a>
   </div>
 
-  <!-- CATEGORY SELECTION -->
-  <div id="category-container">
-    <h2>Welcome, <span id="user-display"></span>! Choose a category:</h2>
-    <button class="category-btn" data-category="Coding">Coding</button>
-    <button class="category-btn" data-category="Math">Math</button>
-    <button class="category-btn" data-category="Science">Science</button>
-  </div>
+  <!-- Content Area -->
+  <div id="content">
+    <!-- Dashboard -->
+    <section id="dashboard" class="active">
+      <h2>Dashboard</h2>
+      <p>Welcome to Study Star! Select a subject to begin:</p>
+      <button class="action-btn" onclick="alert('Math module coming soon!')">Math</button>
+      <button class="action-btn" onclick="alert('Coding module coming soon!')">Coding</button>
+      <button class="action-btn" onclick="alert('Science module coming soon!')">Science</button>
+    </section>
 
-  <!-- STUDY CHAT -->
-  <div id="study-container">
-    <h2>Category: <span id="current-category"></span></h2>
-    <div id="chat"></div>
-    <input type="text" id="user-input" placeholder="Type your answer...">
-    <button id="send-btn">Send</button>
-    <p>Stars earned: <span id="stars-count">0</span> ⭐</p>
-    <button id="back-btn">Back to Categories</button>
-  </div>
+    <!-- Settings -->
+    <section id="settings">
+      <h2>Settings</h2>
+      <p>Adjust your preferences here (placeholder).</p>
+    </section>
 
-  <!-- PROGRESS -->
-  <div id="progress-container">
-    <h2>Progress for <span id="progress-user"></span></h2>
-    <p>Total Stars: <span id="total-stars">0</span> ⭐</p>
-    <button id="home-btn">Back to Home</button>
+    <!-- Login / Signup -->
+    <section id="login">
+      <h2>Login / Signup</h2>
+      <p>This will allow users to save progress (placeholder).</p>
+    </section>
+
+    <!-- Progress -->
+    <section id="progress">
+      <h2>Your Stars</h2>
+      <p>Earn stars for correct answers and track your progress!</p>
+      <div id="stars-container">
+        <!-- Stars will appear here -->
+      </div>
+    </section>
   </div>
-</main>
+</div>
 
 <script>
-  // =======================
-  // INITIALIZATION
-  // =======================
-  const loginContainer = document.getElementById('login-container');
-  const categoryContainer = document.getElementById('category-container');
-  const studyContainer = document.getElementById('study-container');
-  const progressContainer = document.getElementById('progress-container');
-  const chatDiv = document.getElementById('chat');
-  const userDisplay = document.getElementById('user-display');
-  const currentCategory = document.getElementById('current-category');
-  const starsCount = document.getElementById('stars-count');
-
-  let username = localStorage.getItem('studystar-user') || '';
-  let stars = JSON.parse(localStorage.getItem('studystar-stars')) || {};
-  let currentCat = '';
-
-  function showLogin() {
-    loginContainer.style.display = 'block';
-    categoryContainer.style.display = 'none';
-    studyContainer.style.display = 'none';
-    progressContainer.style.display = 'none';
-  }
-
-  function showCategories() {
-    loginContainer.style.display = 'none';
-    categoryContainer.style.display = 'block';
-    studyContainer.style.display = 'none';
-    progressContainer.style.display = 'none';
-  }
-
-  function showStudy() {
-    loginContainer.style.display = 'none';
-    categoryContainer.style.display = 'none';
-    studyContainer.style.display = 'block';
-    progressContainer.style.display = 'none';
-    chatDiv.innerHTML = `<div class="message star-msg">🌟 Hello ${username}! Let's start learning ${currentCat}!</div>`;
-  }
-
-  // =======================
-  // LOGIN
-  // =======================
-  document.getElementById('login-btn').addEventListener('click', () => {
-    const input = document.getElementById('username').value.trim();
-    if(input) {
-      username = input;
-      localStorage.setItem('studystar-user', username);
-      userDisplay.textContent = username;
-      showCategories();
-    }
+  // Landing page Begin button
+  document.getElementById('begin-btn').addEventListener('click', () => {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
   });
 
-  // =======================
-  // CATEGORY SELECTION
-  // =======================
-  document.querySelectorAll('.category-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentCat = btn.dataset.category;
-      currentCategory.textContent = currentCat;
-      if(!stars[username]) stars[username] = {};
-      if(!stars[username][currentCat]) stars[username][currentCat] = 0;
-      starsCount.textContent = stars[username][currentCat];
-      showStudy();
+  // Sidebar navigation
+  const links = document.querySelectorAll('#sidebar a');
+  const sections = document.querySelectorAll('section');
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = link.getAttribute('data-section');
+
+      sections.forEach(sec => {
+        if(sec.id === target) sec.classList.add('active');
+        else sec.classList.remove('active');
+      });
     });
   });
 
-  // =======================
-  // AI / STAR LOGIC
-  // =======================
-  async function askStar(question) {
-    // ------------------------
-    // PLACE YOUR OPENAI API KEY HERE
-    // ------------------------
-    const OPENAI_KEY = "YOUR_API_KEY_HERE"; // Replace with your StudyStar key
-    
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type":"application/json",
-        "Authorization":`Bearer ${OPENAI_KEY}`
-      },
-      body: JSON.stringify({
-        model:"gpt-4",
-        messages:[
-          {role:"system", content:"You are Star, a friendly AI tutor. Teach the student interactively in the chosen category. Adjust difficulty, give hints if wrong, and explain clearly."},
-          {role:"user", content: question}
-        ],
-        max_tokens: 300
-      })
-    });
-    const data = await response.json();
-    return data.choices[0].message.content;
+  // Example: adding stars
+  function addStar() {
+    const starContainer = document.getElementById('stars-container');
+    const star = document.createElement('span');
+    star.textContent = '★';
+    star.classList.add('star');
+    starContainer.appendChild(star);
   }
 
-  function appendMessage(msg, className) {
-    const div = document.createElement('div');
-    div.className = `message ${className}`;
-    div.innerText = msg;
-    chatDiv.appendChild(div);
-    chatDiv.scrollTop = chatDiv.scrollHeight;
-  }
-
-  document.getElementById('send-btn').addEventListener('click', async () => {
-    const input = document.getElementById('user-input');
-    const text = input.value.trim();
-    if(!text) return;
-    appendMessage(text, 'user-msg');
-    input.value = '';
-    
-    const reply = await askStar(text);
-    appendMessage(reply, 'star-msg');
-
-    // Reward logic: basic example
-    if(reply.toLowerCase().includes("correct") || reply.toLowerCase().includes("well done")) {
-      stars[username][currentCat]++;
-      starsCount.textContent = stars[username][currentCat];
-      localStorage.setItem('studystar-stars', JSON.stringify(stars));
-    }
-  });
-
-  // Enter key
-  document.getElementById('user-input').addEventListener('keypress', (e) => {
-    if(e.key === 'Enter') document.getElementById('send-btn').click();
-  });
-
-  // =======================
-  // BACK BUTTON
-  // =======================
-  document.getElementById('back-btn').addEventListener('click', showCategories);
-
-  // =======================
-  // INITIAL DISPLAY
-  // =======================
-  if(username) {
-    userDisplay.textContent = username;
-    showCategories();
-  } else showLogin();
-
+  // For demonstration, add a few stars
+  addStar();
+  addStar();
 </script>
 
 </body>

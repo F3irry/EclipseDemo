@@ -77,7 +77,7 @@
 
 <div id="chat-container">
   <div id="chat">
-    <div class="message eclipse"><img src="images/moon.png" alt="Eclipse" style="width:20px; vertical-align:middle; margin-right:5px;">Hello, I am Eclipse. What can I do for you today?</div>
+    <div class="message eclipse">🌙 Eclipse: Hello, I am Eclipse. What can I do for you today?</div>
   </div>
   <div id="input-container">
     <input type="text" id="user-input" placeholder="Type your message...">
@@ -105,7 +105,7 @@
     else if(text.includes("how are you")) response = "I am a machine, but I am functioning optimally!";
     else if(text.includes("joke")) response = "Why do programmers prefer dark mode? Because light attracts bugs!";
     else response = "Interesting... Tell me more.";
-    appendMessage(response, "eclipse");
+    appendMessage("🌙 Eclipse: " + response, "eclipse");
   }
 
   sendBtn.addEventListener('click', () => {

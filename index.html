@@ -6,14 +6,13 @@
 <title>Study Star</title>
 <link rel="icon" type="image/png" href="images/star.png">
 <style>
-  /* ===== Colors ===== */
   :root {
     --primary: #024CAC; /* Deep Blue */
     --secondary: #D2851A; /* Warm Gold */
     --bg-light: #f4f4f4;
     --bg-dark: #ffffff;
     --text-dark: #1F1F1F;
-    --button-orange: #D2851A;
+    --button-color: #BF5700; /* Burn orange for Ask Star */
   }
 
   body, html {
@@ -23,49 +22,27 @@
     height: 100%;
     background: linear-gradient(to bottom right, var(--primary), var(--secondary));
     color: var(--text-dark);
-    overflow-x: hidden;
   }
 
-  /* ===== Landing Page ===== */
   #landing {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    color: white;
     text-align: center;
-    z-index: 1;
-    position: relative;
   }
 
   #landing h1 {
     font-size: 5em;
-    color: white;
-    text-shadow: 0 0 30px var(--secondary);
-    position: relative;
-    animation: flyIn 1.5s ease-out forwards;
-    opacity: 0;
-  }
-
-  @keyframes flyIn {
-    0% {
-      transform: translateX(-100vw) rotate(-30deg);
-      opacity: 0;
-    }
-    60% {
-      transform: translateX(30px) rotate(5deg);
-      opacity: 1;
-    }
-    100% {
-      transform: translateX(0) rotate(0deg);
-      opacity: 1;
-    }
+    text-shadow: 0 0 25px var(--secondary);
+    margin: 0;
   }
 
   #landing p {
     font-size: 1.5em;
-    margin: 20px 0 40px 0;
-    color: white;
+    margin: 10px 0 40px 0;
   }
 
   #begin-btn {
@@ -85,15 +62,12 @@
     box-shadow: 0 0 25px var(--secondary);
   }
 
-  /* ===== Main App Layout ===== */
   #app {
-    display: flex;
+    display: none;
+    flex-direction: column;
     height: 100vh;
-    display: none; /* Hidden until Begin is clicked */
-    z-index: 1;
   }
 
-  /* Sidebar */
   #sidebar {
     width: 250px;
     background-color: var(--primary);
@@ -101,6 +75,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 20px;
+    flex-shrink: 0;
   }
 
   #sidebar h2 {
@@ -121,23 +96,22 @@
     background-color: var(--secondary);
   }
 
-  /* Content Area */
   #content {
     flex: 1;
     padding: 30px;
     overflow-y: auto;
     background-color: var(--bg-dark);
+    color: var(--text-dark);
   }
 
   section {
-    display: none; /* Show only one section at a time */
+    display: none;
   }
 
   section.active {
     display: block;
   }
 
-  /* Buttons */
   .action-btn {
     padding: 10px 20px;
     background-color: var(--primary);
@@ -152,49 +126,65 @@
     background-color: var(--secondary);
   }
 
-  /* Ask Star Button */
-  #ask-btn {
-    background-color: #D2851A; /* burnt orange */
-    color: white;
-    padding: 12px 24px;
-    border-radius: 12px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 0 10px #D2851A;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: block;
-    margin-top: 15px; /* space below textarea */
-  }
-
-  #ask-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 20px #D2851A;
-  }
-
-  /* Star chat bubble */
-  #star-response {
+  #ask-container {
     margin-top: 20px;
-    padding: 15px;
-    border-radius: 12px;
-    background-color: #f4f4f4;
-    color: #1F1F1F;
-    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+  }
+
+  #question-input {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #ask-star-btn {
+    margin-top: 15px;
+    padding: 12px 25px;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    align-self: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  #ask-star-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--secondary);
+  }
+
+  #response-box {
+    margin-top: 15px;
+    min-height: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    white-space: pre-wrap;
+  }
+
+  #learning-style {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 6px;
   }
 </style>
 </head>
 <body>
 
-<!-- Landing Page -->
 <div id="landing">
   <h1>Study Star</h1>
   <p>Your ultimate study companion</p>
   <button id="begin-btn">Begin!</button>
 </div>
 
-<!-- Main App -->
-<div id="app">
-  <!-- Sidebar -->
+<div id="app" style="display:flex; flex-direction:row; height:100vh;">
   <div id="sidebar">
     <h2>Study Star</h2>
     <a href="#" data-section="dashboard">Dashboard</a>
@@ -203,9 +193,7 @@
     <a href="#" data-section="progress">Progress</a>
   </div>
 
-  <!-- Content Area -->
   <div id="content">
-    <!-- Dashboard -->
     <section id="dashboard" class="active">
       <h2>Dashboard</h2>
       <p>Welcome to Study Star! Select a subject to begin:</p>
@@ -213,36 +201,37 @@
       <button class="action-btn" onclick="alert('Coding module coming soon!')">Coding</button>
       <button class="action-btn" onclick="alert('Science module coming soon!')">Science</button>
 
-      <div style="margin-top: 25px;">
+      <div id="ask-container">
         <p>What can I help with?</p>
-        <textarea id="user-question" rows="4" style="width:100%;"></textarea>
-        <button id="ask-btn">Ask Star</button>
-        <div id="star-response">Star responds here...</div>
+        <textarea id="question-input" placeholder="Type your question here..."></textarea>
+        <select id="learning-style">
+          <option value="detailed">Detailed explanation</option>
+          <option value="example">With example</option>
+          <option value="interests">Use my interests to explain</option>
+          <option value="bullet">Bullet points</option>
+        </select>
+        <button id="ask-star-btn">Ask Star</button>
+        <div id="response-box">Star responds here...</div>
       </div>
     </section>
 
-    <!-- Settings -->
     <section id="settings">
       <h2>Settings</h2>
-      <label>Learning Style:</label>
-      <select id="learning-style">
-          <option value="detailed">Detailed explanation</option>
-          <option value="example">Example</option>
-          <option value="interests">Use my interests</option>
-          <option value="bullet">Bullet points</option>
+      <p>Logout</p>
+      <p>Pick learning style preference:</p>
+      <select id="settings-style">
+        <option value="detailed">Detailed explanation</option>
+        <option value="example">With example</option>
+        <option value="interests">Use my interests</option>
+        <option value="bullet">Bullet points</option>
       </select>
-      <p style="margin-top: 20px;">
-        <button onclick="logout()">Logout</button>
-      </p>
     </section>
 
-    <!-- Login / Signup -->
     <section id="login">
       <h2>Login / Signup</h2>
-      <p>Login feature coming soon...</p>
+      <p>This will allow users to save progress (placeholder).</p>
     </section>
 
-    <!-- Progress -->
     <section id="progress">
       <h2>Your Stars</h2>
       <p>Earn stars for correct answers and track your progress!</p>
@@ -252,13 +241,11 @@
 </div>
 
 <script>
-  /* ===== Landing Page Begin Button ===== */
   document.getElementById('begin-btn').addEventListener('click', () => {
     document.getElementById('landing').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
   });
 
-  /* ===== Sidebar Navigation ===== */
   const links = document.querySelectorAll('#sidebar a');
   const sections = document.querySelectorAll('section');
 
@@ -266,43 +253,45 @@
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const target = link.getAttribute('data-section');
-      sections.forEach(sec => {
-        sec.classList.toggle('active', sec.id === target);
-      });
+      sections.forEach(sec => sec.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
     });
   });
 
-  /* ===== Ask Star Button ===== */
-  document.getElementById('ask-btn').addEventListener('click', async () => {
-    const question = document.getElementById('user-question').value;
+  async function askStar() {
+    const question = document.getElementById('question-input').value;
     const learningStyle = document.getElementById('learning-style').value;
-
-    if (!question) return;
-
-    const responseBox = document.getElementById('star-response');
-    responseBox.innerText = 'Star is thinking...';
+    const responseBox = document.getElementById('response-box');
+    responseBox.textContent = "Star is thinking...";
 
     try {
       const res = await fetch('http://127.0.0.1:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_input: `${question} (style: ${learningStyle})` })
+        body: JSON.stringify({ user_input: `${question} (Respond in style: ${learningStyle})` })
       });
-
-      if (!res.ok) throw new Error('Network response not ok');
-
       const data = await res.json();
-      responseBox.innerText = data.response;
+      responseBox.textContent = data.response;
     } catch (err) {
+      responseBox.textContent = "Oops! Something went wrong. Make sure the backend is running.";
       console.error(err);
-      responseBox.innerText = 'Oops! Something went wrong.';
     }
-  });
-
-  /* ===== Logout Placeholder ===== */
-  function logout() {
-    alert('Logout functionality coming soon...');
   }
+
+  document.getElementById('ask-star-btn').addEventListener('click', askStar);
+
+  function addStar() {
+    const starContainer = document.getElementById('stars-container');
+    const star = document.createElement('span');
+    star.textContent = '★';
+    star.style.color = 'gold';
+    star.style.fontSize = '1.5em';
+    star.style.marginRight = '5px';
+    starContainer.appendChild(star);
+  }
+
+  addStar();
+  addStar();
 </script>
 </body>
 </html>

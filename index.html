@@ -4,151 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Star</title>
-<link rel="icon" type="image/png" href="images/star.png">
 <style>
-  :root {
-    --primary: #024CAC;
-    --secondary: #D2851A;
-    --bg-light: #f4f4f4;
-    --bg-dark: #ffffff;
-    --text-dark: #1F1F1F;
-  }
-
-  body, html {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100%;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-  }
-
-  #landing {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: linear-gradient(to bottom right, var(--primary), var(--secondary));
-    color: white;
-    text-align: center;
-  }
-
-  #landing h1 {
-    font-size: 4em;
-    text-shadow: 0 0 20px var(--secondary);
-    margin: 0;
-  }
-
-  #landing p {
-    font-size: 1.5em;
-    margin: 10px 0 40px 0;
-  }
-
-  #begin-btn {
-    padding: 15px 40px;
-    font-size: 1.2em;
-    background-color: var(--secondary);
-    border: none;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 0 15px var(--secondary);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  #begin-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px var(--secondary);
-  }
-
-  #app {
-    display: flex;
-    height: 100vh;
-    display: none;
-  }
-
-  #sidebar {
-    width: 250px;
-    background-color: var(--primary);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding-top: 20px;
-  }
-
-  #sidebar h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  #sidebar a {
-    text-decoration: none;
-    color: white;
-    padding: 15px 20px;
-    margin: 5px 10px;
-    border-radius: 8px;
-    transition: background 0.2s;
-  }
-
-  #sidebar a:hover {
-    background-color: var(--secondary);
-  }
-
-  #content {
-    flex: 1;
-    padding: 30px;
-    overflow-y: auto;
-    background-color: var(--bg-dark);
-  }
-
-  section {
-    display: none;
-  }
-
-  section.active {
-    display: block;
-  }
-
-  .action-btn {
-    padding: 10px 20px;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-
-  .action-btn:hover {
-    background-color: var(--secondary);
-  }
-
-  .star {
-    color: var(--secondary);
-    font-size: 1.5em;
-    margin-right: 5px;
-  }
-
-  #ai-answer {
-    margin-top: 20px;
-    background-color: #e8e8e8;
-    padding: 15px;
-    border-radius: 8px;
-    min-height: 60px;
-  }
-
-  input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-
-  #ask-btn {
-    margin-top: 10px;
-  }
+  :root { --primary:#024CAC; --secondary:#D2851A; --bg-light:#f4f4f4; --bg-dark:#ffffff; --text-dark:#1F1F1F; }
+  body, html { margin:0; padding:0; font-family:Arial,sans-serif; height:100%; background-color:var(--bg-light); color:var(--text-dark);}
+  #landing {display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:linear-gradient(to bottom right, var(--primary), var(--secondary)); color:white; text-align:center;}
+  #begin-btn {padding:15px 40px; font-size:1.2em; background-color:var(--secondary); border:none; border-radius:10px; color:white; cursor:pointer; box-shadow:0 0 15px var(--secondary);}
+  #begin-btn:hover {transform:scale(1.05); box-shadow:0 0 25px var(--secondary);}
+  #app {display:none; flex-direction:row; height:100vh;}
+  #sidebar {width:250px; background-color:var(--primary); color:white; display:flex; flex-direction:column; padding-top:20px;}
+  #sidebar h2 {text-align:center; margin-bottom:20px;}
+  #sidebar a {text-decoration:none; color:white; padding:15px 20px; margin:5px 10px; border-radius:8px;}
+  #sidebar a:hover {background-color:var(--secondary);}
+  #content {flex:1; padding:30px; overflow-y:auto; background-color:var(--bg-dark);}
+  section {display:none;}
+  section.active {display:block;}
+  .action-btn {padding:10px 20px; background-color:var(--primary); color:white; border:none; border-radius:8px; cursor:pointer; margin-top:10px;}
+  .action-btn:hover {background-color:var(--secondary);}
+  #ask-btn {background-color:var(--secondary); color:white; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; margin-top:10px;}
 </style>
 </head>
 <body>
@@ -164,101 +36,58 @@
     <h2>Study Star</h2>
     <a href="#" data-section="dashboard">Dashboard</a>
     <a href="#" data-section="settings">Settings</a>
-    <a href="#" data-section="login">Login / Signup</a>
-    <a href="#" data-section="progress">Progress</a>
   </div>
 
   <div id="content">
     <section id="dashboard" class="active">
       <h2>Dashboard</h2>
-      <p>Welcome to Study Star! Ask a question or select a subject:</p>
-      <button class="action-btn" onclick="askSubject('Math')">Math</button>
-      <button class="action-btn" onclick="askSubject('Coding')">Coding</button>
-      <button class="action-btn" onclick="askSubject('Science')">Science</button>
-
-      <div>
-        <textarea id="custom-question" placeholder="Or type your own question here..."></textarea>
-        <button id="ask-btn" class="action-btn">Ask AI</button>
-      </div>
-
-      <div id="ai-answer">AI answer will appear here...</div>
+      <input type="text" id="user-question" placeholder="Ask a question...">
+      <button id="ask-btn">Ask Star</button>
+      <p id="answer-area"></p>
+      <button class="action-btn" onclick="alert('Math module coming soon!')">Math</button>
+      <button class="action-btn" onclick="alert('Coding module coming soon!')">Coding</button>
+      <button class="action-btn" onclick="alert('Science module coming soon!')">Science</button>
     </section>
 
     <section id="settings">
       <h2>Settings</h2>
-      <p>Adjust your preferences here (placeholder).</p>
-    </section>
-
-    <section id="login">
-      <h2>Login / Signup</h2>
-      <p>This will allow users to save progress (placeholder).</p>
-    </section>
-
-    <section id="progress">
-      <h2>Your Stars</h2>
-      <div id="stars-container"></div>
+      <p>Logout / select learning preferences (placeholder)</p>
     </section>
   </div>
 </div>
 
 <script>
-document.getElementById('begin-btn').addEventListener('click', () => {
-  document.getElementById('landing').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
+document.getElementById('begin-btn').addEventListener('click', ()=>{
+  document.getElementById('landing').style.display='none';
+  document.getElementById('app').style.display='flex';
 });
 
 const links = document.querySelectorAll('#sidebar a');
 const sections = document.querySelectorAll('section');
-links.forEach(link => {
-  link.addEventListener('click', (e) => {
+links.forEach(link=>{
+  link.addEventListener('click', (e)=>{
     e.preventDefault();
     const target = link.getAttribute('data-section');
-    sections.forEach(sec => {
-      sec.classList.toggle('active', sec.id === target);
-    });
+    sections.forEach(sec=>sec.id===target?sec.classList.add('active'):sec.classList.remove('active'));
   });
 });
 
-function addStar() {
-  const starContainer = document.getElementById('stars-container');
-  const star = document.createElement('span');
-  star.textContent = '★';
-  star.classList.add('star');
-  starContainer.appendChild(star);
-}
-addStar();
-addStar();
-
-async function askAI(question) {
-  try {
-    const res = await fetch('http://127.0.0.1:8000/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({user_input: question})
+document.getElementById('ask-btn').addEventListener('click', async ()=>{
+  const question = document.getElementById('user-question').value;
+  if(!question) return;
+  try{
+    const res = await fetch('http://127.0.0.1:8000/chat',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({user_input:question})
     });
+    if(!res.ok) throw new Error('Network response was not ok');
     const data = await res.json();
-    return data.response;
-  } catch (err) {
+    document.getElementById('answer-area').textContent = data.response;
+  }catch(err){
     console.error(err);
-    return 'Oops! Something went wrong.';
+    document.getElementById('answer-area').textContent='Oops! Something went wrong.';
   }
-}
-
-async function askSubject(subject) {
-  let prompt = '';
-  if(subject === 'Math') prompt = 'Explain a simple math concept.';
-  else if(subject === 'Coding') prompt = 'Explain a coding concept for beginners.';
-  else if(subject === 'Science') prompt = 'Explain a science concept simply.';
-  
-  const answer = await askAI(prompt);
-  document.getElementById('ai-answer').textContent = answer;
-}
-
-document.getElementById('ask-btn').addEventListener('click', async () => {
-  const question = document.getElementById('custom-question').value;
-  if(!question.trim()) return;
-  const answer = await askAI(question);
-  document.getElementById('ai-answer').textContent = answer;
 });
 </script>
 

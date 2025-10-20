@@ -64,7 +64,7 @@
 
   #app {
     display: none;
-    flex-direction: column;
+    flex-direction: row;
     height: 100vh;
   }
 
@@ -143,7 +143,7 @@
   }
 
   #ask-star-btn {
-    margin-top: 15px;
+    margin-top: 20px;
     padding: 12px 25px;
     background-color: var(--button-color);
     border: none;
@@ -184,7 +184,7 @@
   <button id="begin-btn">Begin!</button>
 </div>
 
-<div id="app" style="display:flex; flex-direction:row; height:100vh;">
+<div id="app">
   <div id="sidebar">
     <h2>Study Star</h2>
     <a href="#" data-section="dashboard">Dashboard</a>
@@ -234,7 +234,6 @@
 
     <section id="progress">
       <h2>Your Stars</h2>
-      <p>Earn stars for correct answers and track your progress!</p>
       <div id="stars-container"></div>
     </section>
   </div>
@@ -248,7 +247,6 @@
 
   const links = document.querySelectorAll('#sidebar a');
   const sections = document.querySelectorAll('section');
-
   links.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -265,13 +263,13 @@
     responseBox.textContent = "Star is thinking...";
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/chat', {
+      const res = await fetch('http://127.0.0.1:8000/ask', { // <-- changed /chat to /ask
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ user_input: `${question} (Respond in style: ${learningStyle})` })
+        body: JSON.stringify({ question: `${question} (Respond in style: ${learningStyle})` })
       });
       const data = await res.json();
-      responseBox.textContent = data.response;
+      responseBox.textContent = data.answer; // <-- matches backend response
     } catch (err) {
       responseBox.textContent = "Oops! Something went wrong. Make sure the backend is running.";
       console.error(err);

@@ -4,145 +4,224 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Star</title>
+<link rel="icon" type="image/png" href="images/star.png">
 <style>
+  /* Color Palette */
   :root {
-    --primary: #024CAC;
-    --secondary: #D2851A;
-    --bg-light: #0a0a1a;
+    --primary: #024CAC; /* Deep Blue */
+    --secondary: #D2851A; /* Warm Gold */
+    --bg-light: #f4f4f4;
     --bg-dark: #ffffff;
-    --text-light: #fff;
+    --text-dark: #1F1F1F;
+    --star-yellow: #FFD700;
   }
+
   body, html {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height:100%;
-    background-color:var(--bg-light);
-    color:var(--text-light);
+    height: 100%;
     overflow-x: hidden;
-  }
-
-  /* Stars animation background */
-  body::before {
-    content:'';
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:transparent;
-    z-index:-1;
-  }
-
-  @keyframes glow {
-    0%,100% { text-shadow: 0 0 20px #fff, 0 0 40px #FFD700, 0 0 60px #FFD700;}
-    50% { text-shadow: 0 0 10px #fff, 0 0 20px #FFD700, 0 0 30px #FFD700;}
   }
 
   /* Landing Page */
   #landing {
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    text-align:center;
-    position:relative;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, var(--primary), var(--secondary));
+    color: white;
+    text-align: center;
+    overflow: hidden;
   }
 
   #landing h1 {
-    font-size:6em;
-    color:white;
-    animation: glow 2s infinite alternate;
-    margin:0;
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    position:relative;
+    font-size: 5em;
+    font-weight: bold;
+    text-shadow: 0 0 30px var(--secondary), 0 0 50px var(--secondary);
+    margin: 0;
+    animation: glow 2s ease-in-out infinite alternate;
   }
 
-  /* Shooting stars */
-  .shooting-star {
-    position:absolute;
-    width:2px;
-    height:100px;
-    background: linear-gradient(45deg, white, transparent);
-    opacity:0.8;
-    animation: shoot 1.5s linear infinite;
-  }
-
-  @keyframes shoot {
-    0% {transform: translate(0,0) rotate(45deg); opacity:0;}
-    10% {opacity:1;}
-    100% {transform: translate(1000px,-1000px) rotate(45deg); opacity:0;}
+  @keyframes glow {
+    from { text-shadow: 0 0 20px var(--secondary), 0 0 40px var(--secondary);}
+    to { text-shadow: 0 0 35px var(--secondary), 0 0 70px var(--secondary);}
   }
 
   #landing p {
-    font-size:1.8em;
-    margin:20px 0;
+    font-size: 1.5em;
+    margin: 10px 0 40px 0;
+    text-shadow: 0 0 10px black;
   }
 
   #begin-btn {
-    padding:20px 50px;
-    font-size:1.5em;
+    padding: 15px 50px;
+    font-size: 1.3em;
     background-color: var(--secondary);
-    border:none;
-    border-radius:12px;
-    color:white;
-    cursor:pointer;
-    box-shadow: 0 0 25px var(--secondary);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--secondary);
     transition: transform 0.2s, box-shadow 0.2s;
   }
+
   #begin-btn:hover {
-    transform:scale(1.05);
-    box-shadow:0 0 40px var(--secondary);
+    transform: scale(1.1);
+    box-shadow: 0 0 40px var(--secondary);
   }
 
-  /* App layout */
-  #app { display:none; flex-direction:row; height:100vh; }
+  /* Shooting Stars */
+  .shooting-star {
+    position: absolute;
+    width: 2px;
+    height: 100px;
+    background: linear-gradient(to bottom, white, transparent);
+    animation: shoot linear;
+    opacity: 0.8;
+    transform: rotate(45deg);
+  }
+
+  @keyframes shoot {
+    0% { transform: translateX(0) translateY(0) rotate(45deg); opacity: 1;}
+    100% { transform: translateX(1000px) translateY(500px) rotate(45deg); opacity: 0;}
+  }
+
+  /* Main App Layout */
+  #app {
+    display: none; /* Hidden until Begin is clicked */
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
   #sidebar {
-    width:250px;
-    background-color:var(--primary);
-    color:white;
-    display:flex;
-    flex-direction:column;
-    padding-top:20px;
+    width: 250px;
+    background-color: var(--primary);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
   }
-  #sidebar h2 { text-align:center; margin-bottom:20px; }
+
+  #sidebar h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+  }
+
   #sidebar a {
-    text-decoration:none;
-    color:white;
-    padding:15px 20px;
-    margin:5px 10px;
-    border-radius:8px;
+    text-decoration: none;
+    color: white;
+    padding: 15px 20px;
+    margin: 5px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
   }
-  #sidebar a:hover { background-color:var(--secondary); }
-  #content { flex:1; padding:30px; overflow-y:auto; background-color:var(--bg-dark); }
-  section { display:none; }
-  section.active { display:block; }
+
+  #sidebar a:hover {
+    background-color: var(--secondary);
+  }
+
+  /* Content Area */
+  #content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  section {
+    display: none; /* Show only one section at a time */
+    height: 100%;
+  }
+
+  section.active {
+    display: block;
+  }
+
+  /* Question Input Area */
+  #question-area {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+
+  #user-question {
+    padding: 15px;
+    font-size: 1em;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    width: 100%;
+    resize: none;
+  }
+
+  #ask-star {
+    margin-top: 15px;
+    width: 80px;
+    height: 80px;
+    background: var(--star-yellow);
+    clip-path: polygon(
+      50% 0%, 61% 35%, 98% 35%, 
+      68% 57%, 79% 91%, 50% 70%, 
+      21% 91%, 32% 57%, 2% 35%, 
+      39% 35%
+    );
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--star-yellow);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  #ask-star:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 40px var(--star-yellow);
+  }
+
+  #answer-bubble {
+    margin-top: 20px;
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 15px;
+    min-height: 80px;
+  }
 
   /* Buttons */
-  .action-btn, #ask-btn {
-    padding:10px 20px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    margin-top:10px;
+  .action-btn {
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
   }
-  .action-btn { background-color:var(--primary); color:white; }
-  .action-btn:hover { background-color:var(--secondary); }
-  #ask-btn { background-color:var(--secondary); color:white; }
 
-  /* Answer area */
-  #answer-area { margin-top:20px; font-size:1.2em; min-height:40px; color:#FFD700; }
+  .action-btn:hover {
+    background-color: var(--secondary);
+  }
+
 </style>
 </head>
 <body>
 
+<!-- Landing Page -->
 <div id="landing">
   <h1>Study Star</h1>
   <p>Your ultimate study companion</p>
   <button id="begin-btn">Begin!</button>
 </div>
 
+<!-- Main App -->
 <div id="app">
+  <!-- Sidebar -->
   <div id="sidebar">
     <h2>Study Star</h2>
     <a href="#" data-section="dashboard">Dashboard</a>
@@ -150,93 +229,128 @@
     <a href="#" data-section="login">Login / Signup</a>
     <a href="#" data-section="progress">Progress</a>
   </div>
+
+  <!-- Content Area -->
   <div id="content">
+    <!-- Dashboard -->
     <section id="dashboard" class="active">
       <h2>Dashboard</h2>
-      <input type="text" id="user-question" placeholder="Ask Star a question...">
-      <button id="ask-btn">Ask Star</button>
-      <p id="answer-area"></p>
+      <p>Welcome! Select a subject to begin:</p>
       <button class="action-btn" onclick="alert('Math module coming soon!')">Math</button>
       <button class="action-btn" onclick="alert('Coding module coming soon!')">Coding</button>
       <button class="action-btn" onclick="alert('Science module coming soon!')">Science</button>
+
+      <div id="question-area">
+        <label for="user-question">What can I help with?</label>
+        <textarea id="user-question" placeholder="Type your question here..."></textarea>
+        <button id="ask-star" title="Ask Star"></button>
+        <div id="answer-bubble">Star responds here...</div>
+      </div>
     </section>
+
+    <!-- Settings -->
     <section id="settings">
       <h2>Settings</h2>
-      <p>Logout / select learning preferences (placeholder)</p>
+      <p>Adjust your preferences:</p>
+      <button onclick="alert('Logging out...')">Logout</button>
+      <div>
+        <label for="learning-style">Learning Style:</label>
+        <select id="learning-style">
+          <option>Visual</option>
+          <option>Auditory</option>
+          <option>Kinesthetic</option>
+          <option>Reading/Writing</option>
+        </select>
+      </div>
     </section>
+
+    <!-- Login / Signup -->
     <section id="login">
       <h2>Login / Signup</h2>
-      <p>Users can save progress here (placeholder)</p>
+      <p>Placeholder login form:</p>
+      <input type="text" placeholder="Username">
+      <input type="password" placeholder="Password">
+      <button class="action-btn">Login / Signup</button>
     </section>
+
+    <!-- Progress -->
     <section id="progress">
       <h2>Your Stars</h2>
-      <p>Track your progress here (placeholder)</p>
+      <p>Earn stars for correct answers and track your progress!</p>
       <div id="stars-container"></div>
     </section>
   </div>
 </div>
 
 <script>
-  // Landing page
-  document.getElementById('begin-btn').addEventListener('click', ()=>{
-    document.getElementById('landing').style.display='none';
-    document.getElementById('app').style.display='flex';
+  // Landing page Begin button
+  document.getElementById('begin-btn').addEventListener('click', () => {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
   });
 
-  // Sidebar nav
+  // Sidebar navigation
   const links = document.querySelectorAll('#sidebar a');
   const sections = document.querySelectorAll('section');
-  links.forEach(link=>{
-    link.addEventListener('click', (e)=>{
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
       e.preventDefault();
       const target = link.getAttribute('data-section');
-      sections.forEach(sec=>sec.id===target?sec.classList.add('active'):sec.classList.remove('active'));
+      sections.forEach(sec => {
+        if(sec.id === target) sec.classList.add('active');
+        else sec.classList.remove('active');
+      });
     });
   });
 
-  // Stars demo
-  function addStar() {
-    const starContainer = document.getElementById('stars-container');
-    const star = document.createElement('span');
-    star.textContent='★';
-    star.style.color='gold';
-    star.style.fontSize='1.5em';
-    star.style.marginRight='5px';
-    starContainer.appendChild(star);
-  }
-  addStar();
-  addStar();
-
-  // Shooting stars effect
+  // Add some stars on the landing page for effect
   function createShootingStar() {
     const star = document.createElement('div');
     star.className = 'shooting-star';
-    star.style.left = Math.random() * window.innerWidth + 'px';
     star.style.top = Math.random() * window.innerHeight + 'px';
-    star.style.animationDuration = (1 + Math.random() * 1.5) + 's';
-    document.body.appendChild(star);
-    setTimeout(()=>document.body.removeChild(star),2000);
+    star.style.left = Math.random() * window.innerWidth + 'px';
+    star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+    document.getElementById('landing').appendChild(star);
+    setTimeout(() => star.remove(), 2000);
   }
-  setInterval(createShootingStar, 800);
 
-  // Ask Star button (frontend only)
-  document.getElementById('ask-btn').addEventListener('click', async ()=>{
-    const question = document.getElementById('user-question').value;
-    const answerArea = document.getElementById('answer-area');
-    answerArea.textContent='Loading...';
+  setInterval(createShootingStar, 500);
+
+  // Example: Ask Star button logic
+  const askButton = document.getElementById('ask-star');
+  const userQuestion = document.getElementById('user-question');
+  const answerBubble = document.getElementById('answer-bubble');
+
+  askButton.addEventListener('click', async () => {
+    const question = userQuestion.value;
+    if(!question) return alert('Please type a question!');
+    
+    answerBubble.textContent = 'Star is thinking...';
 
     try {
-      const res = await fetch('/ask', {  // <-- your backend endpoint
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({question})
+      const response = await fetch('http://127.0.0.1:3000/ask', { // your backend
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ question })
       });
-      const data = await res.json();
-      answerArea.textContent=data.answer;
-    } catch(err) {
-      answerArea.textContent='Oops! Something went wrong.';
+      const data = await response.json();
+      answerBubble.textContent = data.answer;
+    } catch (err) {
+      console.error(err);
+      answerBubble.textContent = 'Oops! Something went wrong.';
     }
   });
+
+  // Progress stars example
+  function addStar() {
+    const starContainer = document.getElementById('stars-container');
+    const star = document.createElement('span');
+    star.textContent = '★';
+    star.style.color = 'gold';
+    starContainer.appendChild(star);
+  }
+  addStar(); addStar();
 </script>
 
 </body>
